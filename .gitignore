@@ -1,0 +1,13 @@
+# Local secrets and runtime state
+api/.env
+api/mangokast.db
+api/node_modules/
+node_modules/
+.env
+.env.*
+!.env.example
+
+# Local tooling and OS files
+.vercel/
+.DS_Store
+.opencode/

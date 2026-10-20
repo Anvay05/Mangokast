@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Mangokast product blueprint: from brand onboarding to outcome-based creator selection." />
+    <title>Mangokast — Product blueprint</title>
+    <style>
+      :root {
+        --ink: #19231d;
+        --muted: #6a756d;
+        --green: #176b45;
+        --green-dark: #0d452d;
+        --mango: #f2a340;
+        --lime: #d5ed83;
+        --blue: #b8d6e8;
+        --cream: #f5f4ec;
+        --paper: #fffef9;
+        --line: #d9ded5;
+        --sand: #e8dfcc;
+        --danger: #a44d3d;
+        --display: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+        --body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { margin: 0; background: var(--cream); color: var(--ink); font-family: var(--body); }
+      a { color: inherit; }
+      button, input, select { font: inherit; }
+      button { cursor: pointer; }
+      .wrap { max-width: 1400px; margin: 0 auto; padding: 0 34px; }
+      .topbar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 74px; padding: 0 34px; border-bottom: 1px solid var(--line); background: rgba(245,244,236,.93); backdrop-filter: blur(14px); }
+      .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 900; letter-spacing: -.05em; }
+      .brand-mark { display: grid; place-items: center; width: 31px; height: 31px; border-radius: 8px; background: var(--green); color: var(--lime); font-size: 20px; }
+      .topnav { display: flex; align-items: center; gap: 20px; color: var(--muted); font-size: 12px; font-weight: 800; }
+      .topnav a { text-decoration: none; }
+      .topnav a:hover { color: var(--green); }
+      .top-tag { padding: 8px 11px; border: 1px solid var(--line); border-radius: 999px; color: var(--green); background: var(--paper); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; }
+
+      .hero { position: relative; overflow: hidden; min-height: 630px; padding: 90px 0 110px; border-bottom: 1px solid var(--line); }
+      .hero::before { content: "10 CREATOR RESEARCH LOOP"; position: absolute; right: -30px; top: 110px; color: rgba(23,107,69,.08); font-family: var(--display); font-size: clamp(80px, 13vw, 210px); line-height: .8; letter-spacing: -.06em; transform: rotate(90deg); transform-origin: right top; pointer-events: none; }
+      .eyebrow { margin: 0 0 18px; color: var(--green); font-size: 11px; font-weight: 900; letter-spacing: .18em; text-transform: uppercase; }
+      .hero-grid { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(380px, .96fr); gap: 80px; align-items: center; }
+      h1, h2, h3, p { margin-top: 0; }
+      .hero h1 { max-width: 760px; margin-bottom: 28px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(58px, 8vw, 116px); font-weight: 500; line-height: .86; letter-spacing: -.09em; }
+      .hero h1 em { color: var(--green); font-style: normal; }
+      .hero-copy { position: relative; z-index: 1; }
+      .hero-copy > p:not(.eyebrow) { max-width: 550px; color: var(--muted); font-size: 18px; line-height: 1.6; }
+      .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+      .button { display: inline-flex; align-items: center; gap: 10px; border: 0; border-radius: 5px; padding: 14px 18px; font-weight: 900; text-decoration: none; }
+      .button.primary { background: var(--green); color: white; }
+      .button.secondary { border: 1px solid var(--line); background: var(--paper); color: var(--ink); }
+      .button:hover { transform: translateY(-1px); }
+      .hero-poster { position: relative; min-height: 390px; padding: 28px; background: var(--mango); box-shadow: 17px 17px 0 var(--green); transform: rotate(1.4deg); }
+      .hero-poster::after { content: "BRAND → CREATOR → OUTCOME"; position: absolute; right: -37px; bottom: 46px; padding: 7px 12px; background: var(--blue); color: var(--ink); font-family: var(--mono); font-size: 10px; font-weight: 800; transform: rotate(-90deg); }
+      .poster-kicker { font-family: var(--mono); font-size: 10px; font-weight: 900; letter-spacing: .12em; }
+      .poster-title { max-width: 400px; margin: 48px 0 30px; font-family: var(--display); font-size: clamp(56px, 8vw, 110px); line-height: .78; letter-spacing: -.07em; }
+      .poster-line { width: 82%; height: 1px; background: var(--ink); }
+      .poster-foot { display: flex; justify-content: space-between; gap: 16px; margin-top: 18px; font-family: var(--mono); font-size: 10px; }
+      .poster-sticker { position: absolute; right: 28px; top: 28px; display: grid; place-items: center; width: 72px; height: 72px; border-radius: 50%; background: var(--paper); color: var(--green); font-size: 11px; font-weight: 900; text-align: center; transform: rotate(10deg); }
+
+      .rail { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; margin: -26px auto 0; position: relative; z-index: 2; }
+      .rail-item { min-height: 88px; padding: 14px 15px; border-right: 1px solid rgba(255,255,255,.28); background: var(--green); color: white; }
+      .rail-item:first-child { background: var(--green-dark); }
+      .rail-item:nth-child(2) { background: #28744f; }
+      .rail-item:nth-child(3) { background: #3c815e; }
+      .rail-item:nth-child(4) { background: #5a936f; }
+      .rail-item:nth-child(5) { background: #8e9f62; }
+      .rail-item:nth-child(6) { background: #b2a15a; }
+      .rail-number { display: block; margin-bottom: 18px; font-family: var(--mono); font-size: 10px; opacity: .75; }
+      .rail-label { display: block; font-size: 12px; font-weight: 900; }
+
+      .section { padding: 105px 0; border-bottom: 1px solid var(--line); }
+      .section-head { display: grid; grid-template-columns: .7fr 1.3fr; gap: 30px; align-items: end; margin-bottom: 42px; }
+      .section-head h2 { max-width: 790px; margin-bottom: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(40px, 6vw, 75px); font-weight: 500; line-height: .94; letter-spacing: -.075em; }
+      .section-head p { max-width: 410px; margin-bottom: 4px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+      .section-number { color: var(--mango); font-family: var(--display); font-size: 80px; line-height: .7; }
+
+      .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+      .step { min-height: 245px; padding: 22px; border-top: 4px solid var(--ink); background: var(--paper); }
+      .step:nth-child(2) { margin-top: 34px; border-color: var(--green); }
+      .step:nth-child(3) { margin-top: 10px; border-color: var(--mango); }
+      .step:nth-child(4) { margin-top: 54px; border-color: var(--blue); }
+      .step-number { display: block; margin-bottom: 50px; color: var(--green); font-family: var(--mono); font-size: 11px; }
+      .step h3 { margin-bottom: 10px; font-size: 20px; letter-spacing: -.04em; }
+      .step p { margin-bottom: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+      .mini-fields { display: grid; gap: 7px; margin-top: 18px; }
+      .mini-field { padding: 8px 10px; border: 1px solid var(--line); background: var(--cream); color: var(--muted); font-family: var(--mono); font-size: 10px; }
+
+      .brief-layout { display: grid; grid-template-columns: .7fr 1.3fr; gap: 24px; align-items: start; }
+      .brief-note { min-height: 100%; padding: 28px; background: var(--ink); color: white; }
+      .brief-note h3 { max-width: 250px; font-family: Georgia, "Times New Roman", serif; font-size: 34px; font-weight: 500; line-height: .98; letter-spacing: -.06em; }
+      .brief-note p { color: #bfd0c1; font-size: 13px; line-height: 1.55; }
+      .brief-note ul { margin: 28px 0 0; padding: 0; list-style: none; color: var(--lime); font-family: var(--mono); font-size: 11px; line-height: 2; }
+      .brief-form { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; padding: 28px; border: 1px solid var(--line); background: var(--paper); }
+      .field { display: grid; gap: 7px; color: var(--ink); font-size: 12px; font-weight: 900; }
+      .field.wide { grid-column: 1 / -1; }
+      .field input, .field select { width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid var(--line); border-radius: 2px; outline: 0; background: var(--cream); color: var(--ink); }
+      .field input:focus, .field select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(23,107,69,.12); }
+      .brief-output { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 8px; }
+      .output { padding: 15px; background: var(--soft, #edf0e5); }
+      .output b { display: block; color: var(--green); font-size: 19px; }
+      .output span { color: var(--muted); font-size: 10px; }
+
+      .discovery-layout { display: grid; grid-template-columns: 1.1fr .9fr; gap: 24px; align-items: start; }
+      .search-bar { display: flex; gap: 10px; margin-bottom: 15px; padding: 15px; border: 1px solid var(--line); background: var(--paper); }
+      .search-bar input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 15px; }
+      .search-button { border: 0; background: var(--mango); color: var(--ink); padding: 10px 15px; font-weight: 900; }
+      .creator-list { display: grid; gap: 10px; }
+      .creator-row { display: grid; grid-template-columns: 45px 1fr auto; gap: 14px; align-items: center; padding: 17px; border: 1px solid var(--line); background: var(--paper); }
+      .avatar { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: var(--green); color: var(--lime); font-family: var(--display); font-size: 18px; }
+      .creator-row h3 { margin: 0 0 4px; font-size: 16px; }
+      .creator-row p { margin: 0; color: var(--muted); font-size: 11px; }
+      .creator-stat { text-align: right; }
+      .creator-stat b { display: block; color: var(--green); font-size: 16px; }
+      .creator-stat span { color: var(--muted); font-family: var(--mono); font-size: 9px; text-transform: uppercase; }
+      .fit-stamp { padding: 7px 9px; border: 1px solid var(--green); color: var(--green); font-family: var(--mono); font-size: 10px; font-weight: 900; transform: rotate(-4deg); }
+      .discovery-side { padding: 27px; background: var(--blue); }
+      .discovery-side h3 { max-width: 260px; margin-bottom: 20px; font-family: Georgia, "Times New Roman", serif; font-size: 34px; font-weight: 500; line-height: 1; letter-spacing: -.06em; }
+      .rule { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid rgba(25,35,29,.25); font-size: 12px; }
+      .rule span:last-child { font-family: var(--mono); font-size: 10px; font-weight: 900; }
+
+      .decision-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 24px; }
+      .score-card { padding: 28px; background: var(--green); color: white; }
+      .score-card h3 { max-width: 300px; font-family: Georgia, "Times New Roman", serif; font-size: 36px; font-weight: 500; line-height: .98; letter-spacing: -.06em; }
+      .score-card p { color: #c8dccb; font-size: 13px; line-height: 1.55; }
+      .score-line { display: grid; grid-template-columns: 125px 1fr 35px; gap: 10px; align-items: center; margin: 17px 0; font-family: var(--mono); font-size: 10px; }
+      .score-line i { height: 5px; background: rgba(255,255,255,.22); }
+      .score-line i::before { content: ""; display: block; width: var(--score); height: 100%; background: var(--lime); }
+      .bets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .bet { min-height: 270px; padding: 20px; border: 1px solid var(--line); background: var(--paper); }
+      .bet.safe { border-top: 7px solid var(--green); }
+      .bet.growth { border-top: 7px solid var(--mango); }
+      .bet.experiment { border-top: 7px solid var(--blue); }
+      .bet-label { color: var(--muted); font-family: var(--mono); font-size: 10px; text-transform: uppercase; }
+      .bet h3 { margin: 36px 0 9px; font-size: 19px; }
+      .bet p { color: var(--muted); font-size: 12px; line-height: 1.5; }
+      .bet strong { display: block; margin-top: 24px; color: var(--green); font-family: var(--mono); font-size: 12px; }
+
+      .pipeline { display: grid; grid-template-columns: repeat(6, 1fr); border: 1px solid var(--line); background: var(--paper); }
+      .pipe { min-height: 190px; padding: 17px; border-right: 1px solid var(--line); }
+      .pipe:last-child { border-right: 0; }
+      .pipe-number { display: block; margin-bottom: 43px; color: var(--mango); font-family: var(--mono); font-size: 10px; }
+      .pipe h3 { margin-bottom: 7px; font-size: 14px; }
+      .pipe p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
+      .tracking-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+      .metric-wall { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); }
+      .metric { padding: 25px; background: var(--paper); }
+      .metric b { display: block; color: var(--green); font-family: Georgia, "Times New Roman", serif; font-size: 35px; font-weight: 500; }
+      .metric span { color: var(--muted); font-family: var(--mono); font-size: 10px; text-transform: uppercase; }
+      .result-note { padding: 27px; background: var(--mango); }
+      .result-note h3 { max-width: 300px; font-family: Georgia, "Times New Roman", serif; font-size: 38px; font-weight: 500; line-height: .95; letter-spacing: -.06em; }
+      .result-note p { max-width: 390px; font-size: 13px; line-height: 1.55; }
+
+      .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+      .feature-group { min-height: 260px; padding: 23px; background: var(--paper); }
+      .feature-group:nth-child(2n) { background: #f1f3ea; }
+      .feature-group h3 { margin-bottom: 17px; font-family: Georgia, "Times New Roman", serif; font-size: 25px; font-weight: 500; letter-spacing: -.04em; }
+      .feature-group ul { margin: 0; padding: 0; list-style: none; color: var(--muted); font-size: 12px; line-height: 2; }
+      .feature-group li::before { content: "↳"; display: inline-block; width: 19px; color: var(--green); font-weight: 900; }
+
+      .economics-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 25px; align-items: start; }
+      .cost-card { padding: 28px; background: var(--ink); color: white; }
+      .cost-card h3 { max-width: 300px; font-family: Georgia, "Times New Roman", serif; font-size: 35px; font-weight: 500; line-height: .96; letter-spacing: -.06em; }
+      .cost-card p { color: #c6d4c8; font-size: 12px; line-height: 1.5; }
+      .cost-result { margin-top: 26px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.25); }
+      .cost-result b { display: block; color: var(--lime); font-family: Georgia, "Times New Roman", serif; font-size: 48px; font-weight: 500; letter-spacing: -.07em; }
+      .cost-result span { color: #c6d4c8; font-family: var(--mono); font-size: 10px; }
+      .cost-form { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 24px; border: 1px solid var(--line); background: var(--paper); }
+      .cost-form .field { font-size: 11px; }
+      .cost-breakdown { grid-column: 1 / -1; margin-top: 8px; border-top: 1px solid var(--line); }
+      .cost-row { display: flex; justify-content: space-between; gap: 15px; padding: 12px 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+      .cost-row strong { color: var(--ink); font-family: var(--mono); font-size: 11px; }
+      .cost-caveat { grid-column: 1 / -1; margin: 0; color: var(--danger); font-size: 11px; line-height: 1.5; }
+      .cost-envelopes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 22px; }
+      .envelope { padding: 17px; border: 1px solid var(--line); background: var(--paper); }
+      .envelope h3 { margin-bottom: 28px; font-size: 14px; }
+      .envelope b { display: block; color: var(--green); font-family: Georgia, "Times New Roman", serif; font-size: 27px; font-weight: 500; }
+      .envelope span { color: var(--muted); font-size: 10px; }
+
+      .principles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+      .principle { padding: 22px; border-left: 5px solid var(--green); background: var(--paper); }
+      .principle:nth-child(2) { border-color: var(--mango); }
+      .principle:nth-child(3) { border-color: var(--blue); }
+      .principle:nth-child(4) { border-color: var(--lime); }
+      .principle h3 { margin-bottom: 9px; font-size: 16px; }
+      .principle p { margin-bottom: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+      .footer { padding: 46px 0 65px; }
+      .footer p { max-width: 700px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(32px, 5vw, 65px); line-height: .96; letter-spacing: -.07em; }
+      .footer small { color: var(--muted); font-family: var(--mono); font-size: 10px; }
+      .mono { font-family: var(--mono); }
+
+      @media (max-width: 980px) {
+        .hero-grid, .brief-layout, .discovery-layout, .decision-layout, .economics-layout { grid-template-columns: 1fr; }
+        .hero-poster { max-width: 620px; }
+        .rail { grid-template-columns: repeat(3, 1fr); }
+        .rail-item:nth-child(3) { border-right: 0; }
+        .steps { grid-template-columns: repeat(2, 1fr); }
+        .pipeline { grid-template-columns: repeat(3, 1fr); }
+        .pipe:nth-child(3) { border-right: 0; }
+        .pipe:nth-child(n+4) { border-top: 1px solid var(--line); }
+        .feature-grid { grid-template-columns: repeat(2, 1fr); }
+        .principles { grid-template-columns: repeat(2, 1fr); }
+      }
+      @media (max-width: 640px) {
+        .wrap { padding: 0 18px; }
+        .topbar { height: 64px; padding: 0 18px; }
+        .topnav a { display: none; }
+        .hero { padding: 65px 0 80px; }
+        .hero-grid { gap: 55px; }
+        .hero h1 { font-size: clamp(54px, 16vw, 86px); }
+        .hero-poster { min-height: 330px; box-shadow: 10px 10px 0 var(--green); }
+        .rail { grid-template-columns: repeat(2, 1fr); }
+        .rail-item:nth-child(2n) { border-right: 0; }
+        .section { padding: 75px 0; }
+        .section-head { grid-template-columns: 1fr; gap: 20px; }
+        .section-number { font-size: 55px; }
+        .steps, .bets, .feature-grid, .principles, .cost-envelopes { grid-template-columns: 1fr; }
+        .step:nth-child(n) { margin-top: 0; }
+        .brief-form, .cost-form { grid-template-columns: 1fr; padding: 18px; }
+        .field.wide, .brief-output, .cost-breakdown, .cost-caveat { grid-column: auto; }
+        .brief-output { grid-template-columns: 1fr; }
+        .creator-row { grid-template-columns: 40px 1fr; }
+        .creator-stat { grid-column: 2; text-align: left; }
+        .pipeline { grid-template-columns: 1fr 1fr; }
+        .pipe:nth-child(n) { border-right: 0; }
+        .pipe:nth-child(odd) { border-right: 1px solid var(--line); }
+        .tracking-layout { grid-template-columns: 1fr; }
+        .top-tag { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top"><span class="brand-mark">M</span> Mangokast</a>
+      <nav class="topnav" aria-label="Blueprint navigation">
+        <a href="#journey">Journey</a>
+        <a href="#features">Features</a>
+        <a href="#economics">Economics</a>
+        <span class="top-tag">Product blueprint · v0.1</span>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="wrap hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">The outcome-first creator desk</p>
+            <h1>Find the creator who makes the <em>math</em> work.</h1>
+            <p>Mangokast turns a brand brief into a transparent creator shortlist, then connects the shortlist to tracked clicks, purchases, revenue, and real CAC.</p>
+            <div class="hero-actions">
+              <a class="button primary" href="#journey">Walk through the product ↓</a>
+              <a class="button secondary" href="#economics">See the cost model →</a>
+            </div>
+          </div>
+          <div class="hero-poster" aria-label="Mangokast product poster treatment">
+            <span class="poster-kicker">RESEARCH / DECISION / LEARNING</span>
+            <span class="poster-sticker">10<br />CREATORS</span>
+            <div class="poster-title">LESS<br />GUESS<br />WORK.</div>
+            <div class="poster-line"></div>
+            <div class="poster-foot"><span>BRAND BRIEF</span><span>→</span><span>ACTUAL CAC</span></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="wrap">
+        <div class="rail" aria-label="Product journey stages">
+          <a class="rail-item" href="#onboarding"><span class="rail-number">01</span><span class="rail-label">Onboard</span></a>
+          <a class="rail-item" href="#brief"><span class="rail-number">02</span><span class="rail-label">Brief</span></a>
+          <a class="rail-item" href="#discovery"><span class="rail-number">03</span><span class="rail-label">Discover</span></a>
+          <a class="rail-item" href="#decision"><span class="rail-number">04</span><span class="rail-label">Decide</span></a>
+          <a class="rail-item" href="#activation"><span class="rail-number">05</span><span class="rail-label">Activate</span></a>
+          <a class="rail-item" href="#tracking"><span class="rail-number">06</span><span class="rail-label">Learn</span></a>
+        </div>
+      </div>
+
+      <section class="section" id="journey">
+        <div class="wrap">
+          <div class="section-head">
+            <div><span class="section-number">01</span><p class="eyebrow">The full journey</p></div>
+            <div><h2>From “I need creators” to “this creator actually worked.”</h2><p>A normal business should not need to understand influencer analytics. It should answer a few commercial questions and get a decision it can defend.</p></div>
+          </div>
+          <div class="steps" id="onboarding">
+            <article class="step"><span class="step-number">01 / ACCOUNT</span><h3>Onboard the brand</h3><p>Create a workspace that holds the brand’s economics, audience, category, tone, and history.</p><div class="mini-fields"><span class="mini-field">GlowSkin / India</span><span class="mini-field">D2C skincare</span></div></article>
+            <article class="step"><span class="step-number">02 / CAMPAIGN</span><h3>Write the brief</h3><p>Set the goal, budget, target CAC, product price, margin, geography, language, and audience.</p><div class="mini-fields"><span class="mini-field">Goal: purchases</span><span class="mini-field">Target CAC: ₹500</span></div></article>
+            <article class="step"><span class="step-number">03 / RESEARCH</span><h3>Find and vet</h3><p>Discover creators or paste candidates. Pull official public signals, then ask for authorized audience and rate data.</p><div class="mini-fields"><span class="mini-field">Public facts + creator data</span><span class="mini-field">Source + timestamp</span></div></article>
+            <article class="step"><span class="step-number">04 / OUTCOME</span><h3>Test, track, learn</h3><p>Give each creator a link or code. Compare expected versus actual clicks, purchases, revenue, and CAC.</p><div class="mini-fields"><span class="mini-field">Actual CAC: ₹400</span><span class="mini-field">Scale the winners</span></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="brief">
+        <div class="wrap">
+          <div class="section-head"><div><span class="section-number">02</span><p class="eyebrow">Onboarding / campaign brief</p></div><div><h2>Tell Mangokast what “good” means in money.</h2><p>The brief is not a vanity form. These inputs become the guardrails for every creator recommendation.</p></div></div>
+          <div class="brief-layout">
+            <aside class="brief-note"><p class="eyebrow" style="color:var(--lime)">The brief becomes the filter</p><h3>Not “who has the most followers?”</h3><p>We ask whether the creator can plausibly reach the right people at a cost the business can afford.</p><ul><li>✓ product economics</li><li>✓ audience + language</li><li>✓ budget + target CAC</li><li>✓ conversion assumptions</li></ul></aside>
+            <form class="brief-form" onsubmit="return false">
+              <label class="field wide">Brand / campaign name<input value="GlowSkin · Vitamin C serum" /></label>
+              <label class="field">Primary goal<select><option>Purchases</option><option>Qualified traffic</option><option>Leads</option><option>Awareness</option></select></label>
+              <label class="field">Market / language<input value="India · Hindi / English" /></label>
+              <label class="field">Campaign budget<input value="₹2,00,000" /></label>
+              <label class="field">Target CAC<input value="₹500" /></label>
+              <label class="field">Product price<input value="₹1,499" /></label>
+              <label class="field">Gross margin<input value="60%" /></label>
+              <label class="field wide">Audience<input value="Indian women, 18–30, skincare and self-care" /></label>
+              <div class="brief-output"><div class="output"><b>₹500</b><span>maximum target CAC</span></div><div class="output"><b>₹899</b><span>break-even guardrail</span></div><div class="output"><b>₹2L</b><span>total creator budget</span></div></div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="discovery">
+        <div class="wrap">
+          <div class="section-head"><div><span class="section-number">03</span><p class="eyebrow">Discovery / research</p></div><div><h2>Search by the brief, not by fame.</h2><p>In the current MVP, the business can paste channel URLs. The finished product will also discover candidates from the campaign brief and lookalikes.</p></div></div>
+          <div class="discovery-layout">
+            <div>
+              <div class="search-bar"><input value="Indian skincare creators with purchase-intent reviews" aria-label="Creator search query" /><button class="search-button" type="button">Search</button></div>
+              <div class="creator-list">
+                <article class="creator-row"><span class="avatar">RK</span><div><h3>Rahul K. Tech</h3><p>Hindi / English · Product review · 186K median views</p></div><div class="creator-stat"><b>94%</b><span>fit signal</span></div><span class="fit-stamp">SAFE BET</span></article>
+                <article class="creator-row"><span class="avatar" style="background:var(--mango);color:var(--ink)">AS</span><div><h3>Art &amp; Science</h3><p>English · Explainers · 92K median views</p></div><div class="creator-stat"><b>91%</b><span>fit signal</span></div><span class="fit-stamp" style="border-color:var(--mango);color:#9a6118">GROWTH</span></article>
+                <article class="creator-row"><span class="avatar" style="background:var(--blue);color:var(--ink)">NP</span><div><h3>New Perspective</h3><p>Hindi · Lifestyle · 58K median views</p></div><div class="creator-stat"><b>86%</b><span>fit signal</span></div><span class="fit-stamp" style="border-color:#588ca9;color:#588ca9">TEST</span></article>
+              </div>
+            </div>
+            <aside class="discovery-side"><p class="eyebrow">What gets checked</p><h3>Every result has a reason.</h3><div class="rule"><span>Recent performance</span><span>PUBLIC API</span></div><div class="rule"><span>Audience fit</span><span>AUTHORISED</span></div><div class="rule"><span>Fee / availability</span><span>CREATOR</span></div><div class="rule"><span>Purchase signal</span><span>ESTIMATE</span></div><div class="rule"><span>Brand safety</span><span>REVIEW</span></div></aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="decision">
+        <div class="wrap">
+          <div class="section-head"><div><span class="section-number">04</span><p class="eyebrow">Decision / shortlist</p></div><div><h2>Three bets are better than one black-box winner.</h2><p>Mangokast should show the safest option, the highest-upside option, and a small experiment—each with evidence, uncertainty, and a reason to act.</p></div></div>
+          <div class="decision-layout">
+            <article class="score-card"><p class="eyebrow" style="color:var(--lime)">Creator fit / Rahul K. Tech</p><h3>Strong fit for a first test.</h3><p>Good recent consistency and relevant product-review behaviour. Audience demographics still need creator-authorized confirmation.</p><div class="score-line"><span>Performance</span><i style="--score:94%"></i><b>94</b></div><div class="score-line"><span>Audience fit</span><i style="--score:78%"></i><b>78</b></div><div class="score-line"><span>Budget fit</span><i style="--score:88%"></i><b>88</b></div><div class="score-line"><span>Confidence</span><i style="--score:64%"></i><b>64</b></div></article>
+            <div class="bets"><article class="bet safe"><span class="bet-label">01 / safer</span><h3>Rahul K. Tech</h3><p>Stable performance, clear product-review context, and a fee that sits inside the brief.</p><strong>Expected CAC: ₹450–₹850</strong></article><article class="bet growth"><span class="bet-label">02 / upside</span><h3>Art &amp; Science</h3><p>Smaller reach but deeper conversations. Worth testing for high-intent education.</p><strong>Expected CAC: ₹400–₹950</strong></article><article class="bet experiment"><span class="bet-label">03 / experiment</span><h3>New Perspective</h3><p>Lower cost and local-language potential. Wider uncertainty; use a controlled test.</p><strong>Expected CAC: ₹350–₹1,200</strong></article></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="activation">
+        <div class="wrap">
+          <div class="section-head"><div><span class="section-number">05</span><p class="eyebrow">Activate / manage</p></div><div><h2>From shortlist to a trackable deal.</h2><p>The creator is not “done” when shortlisted. The product needs to help the team make the deal, ship the brief, and create a clean measurement trail.</p></div></div>
+          <div class="pipeline"><article class="pipe"><span class="pipe-number">01</span><h3>Shortlisted</h3><p>Save the creator and evidence.</p></article><article class="pipe"><span class="pipe-number">02</span><h3>Contacted</h3><p>Generate a brief and outreach note.</p></article><article class="pipe"><span class="pipe-number">03</span><h3>Negotiating</h3><p>Record fee, deliverables, usage rights.</p></article><article class="pipe"><span class="pipe-number">04</span><h3>Approved</h3><p>Lock terms and campaign dates.</p></article><article class="pipe"><span class="pipe-number">05</span><h3>Live</h3><p>Track content, links, codes, and spend.</p></article><article class="pipe"><span class="pipe-number">06</span><h3>Completed</h3><p>Compare expected with actual CAC.</p></article></div>
+        </div>
+      </section>
+
+      <section class="section" id="tracking">
+        <div class="wrap">
+          <div class="section-head"><div><span class="section-number">06</span><p class="eyebrow">Learn / outcome loop</p></div><div><h2>The product gets smarter after every sale.</h2><p>Views select the first test. Tracked outcomes decide who deserves the next budget.</p></div></div>
+          <div class="tracking-layout"><div class="metric-wall"><div class="metric"><b>8,400</b><span>tracked clicks</span></div><div class="metric"><b>250</b><span>purchases</span></div><div class="metric"><b>₹3.75L</b><span>revenue</span></div><div class="metric"><b>₹400</b><span>actual CAC</span></div></div><aside class="result-note"><p class="eyebrow">Campaign result / GlowSkin</p><h3>Creator A beat the target by ₹100.</h3><p>Expected CAC was ₹450–₹850. Actual CAC landed at ₹400. Promote this creator to the “repeat partner” pool and use the result to calibrate future recommendations.</p></aside></div>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="wrap">
+          <div class="section-head"><div><span class="section-number">07</span><p class="eyebrow">Complete feature map</p></div><div><h2>Everything Mangokast needs to become the outcome layer.</h2><p>Build the smallest complete loop first. These are the product capabilities, grouped by the job they help the business do.</p></div></div>
+          <div class="feature-grid">
+            <article class="feature-group"><h3>Brand &amp; onboarding</h3><ul><li>Workspace and team members</li><li>Brand profile and category</li><li>Product catalogue</li><li>Gross margin and AOV</li><li>Target CAC and budget</li><li>Audience, location, language</li><li>Brand safety preferences</li></ul></article>
+            <article class="feature-group"><h3>Campaign brief</h3><ul><li>Goal: awareness, traffic, leads, purchases</li><li>Campaign dates and deliverables</li><li>Creator tier preferences</li><li>Offer and discount strategy</li><li>Conversion assumptions</li><li>Hard constraints and exclusions</li><li>Saved reusable briefs</li></ul></article>
+            <article class="feature-group"><h3>Creator discovery</h3><ul><li>YouTube URL / ID / handle import</li><li>Brief-to-creator search</li><li>Category and keyword search</li><li>Language and geography filters</li><li>Lookalike creators</li><li>Existing creator list import</li><li>Creator opt-in data request</li></ul></article>
+            <article class="feature-group"><h3>Research &amp; vetting</h3><ul><li>Official API public metrics</li><li>Recent video evidence</li><li>Median and consistency signals</li><li>Engagement indicators</li><li>Audience-fit evidence</li><li>Brand safety review</li><li>Data freshness and confidence</li></ul></article>
+            <article class="feature-group"><h3>Decision engine</h3><ul><li>Explainable fit score</li><li>Budget-fit score</li><li>Expected relevant views</li><li>Fee range scenarios</li><li>Expected CAC ranges</li><li>Safe / growth / experiment bets</li><li>Missing-data warnings</li></ul></article>
+            <article class="feature-group"><h3>Creator operations</h3><ul><li>Shortlist and comparison</li><li>Creator status pipeline</li><li>Outreach templates</li><li>Rate and terms capture</li><li>Deliverable checklist</li><li>Usage rights and approvals</li><li>Creator notes and history</li></ul></article>
+            <article class="feature-group"><h3>Tracking &amp; attribution</h3><ul><li>UTM link generator</li><li>Creator-specific coupon codes</li><li>Click and landing-page events</li><li>Lead and purchase events</li><li>Revenue and refund tracking</li><li>Actual CAC and ROAS</li><li>Planned vs actual reporting</li></ul></article>
+            <article class="feature-group"><h3>Learning system</h3><ul><li>Creator outcome history</li><li>Category benchmarks</li><li>Language and format benchmarks</li><li>Fee prediction calibration</li><li>Repeat-partner pool</li><li>Winner lookalikes</li><li>Budget reallocation suggestions</li></ul></article>
+            <article class="feature-group"><h3>Trust &amp; governance</h3><ul><li>Metric source labels</li><li>Retrieved-at timestamps</li><li>Estimate methodology</li><li>Privacy and data deletion</li><li>YouTube API attribution</li><li>Consent for creator data</li><li>Audit trail and exports</li></ul></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="economics">
+        <div class="wrap">
+          <div class="section-head"><div><span class="section-number">08</span><p class="eyebrow">Cost to serve / 10 creators</p></div><div><h2>What does one business cost us?</h2><p>This is a planning model for software marginal cost. It excludes the creator’s fee, campaign spend, taxes, legal work, and human operations time.</p></div></div>
+          <div class="economics-layout">
+            <aside class="cost-card"><p class="eyebrow" style="color:var(--lime)">Live calculator</p><h3>Model the cost of one research loop.</h3><p>Illustrative planning FX: <span class="mono">US$1 = ₹84</span>. YouTube API usage is treated as a quota constraint, not a direct per-call cash charge at this scale.</p><div class="cost-result"><b id="cost-total-usd">$47</b><span id="cost-total-inr">₹3,948 per business / month</span></div></aside>
+            <div>
+              <div class="cost-form">
+                <label class="field">Creators analysed<input id="creator-count" type="number" min="1" value="10" /></label>
+                <label class="field">Refreshes / creator / month<input id="refreshes" type="number" min="1" value="1" /></label>
+                <label class="field">LLM classification<select id="llm-tier"><option value="0">Rules only · $0</option><option value="2" selected>Light sample · $2</option><option value="20">Rich analysis · $20</option></select></label>
+                <label class="field">Infra allocation<select id="infra-tier"><option value="5">Lean local/beta · $5</option><option value="35" selected>Shared hosted beta · $35</option><option value="125">Production allocation · $125</option></select></label>
+                <label class="field">Outreach / email<select id="email-tier"><option value="0">Manual · $0</option><option value="10" selected>Low volume · $10</option><option value="30">Team volume · $30</option></select></label>
+                <label class="field">Paid creator data provider<input id="provider-cost" type="number" min="0" value="0" /></label>
+                <div class="cost-breakdown"><div class="cost-row"><span>YouTube Data API cash charge</span><strong>$0 / ₹0</strong></div><div class="cost-row"><span>LLM classification</span><strong id="cost-llm">$2 / ₹168</strong></div><div class="cost-row"><span>Backend + database allocation</span><strong id="cost-infra">$35 / ₹2,940</strong></div><div class="cost-row"><span>Outreach / email</span><strong id="cost-email">$10 / ₹840</strong></div><div class="cost-row"><span>Paid creator data provider</span><strong id="cost-provider">$0 / ₹0</strong></div></div>
+                <p class="cost-caveat">This estimates Mangokast’s software cost, not the creator fee. A paid creator-data provider can become the largest variable and should use the vendor’s real quote, not an invented price.</p>
+              </div>
+              <div class="cost-envelopes"><article class="envelope"><h3>Lean MVP</h3><b>$0–$16</b><span>₹0–₹1,344 / month</span></article><article class="envelope"><h3>Hosted beta</h3><b>$26–$109</b><span>₹2,184–₹9,156 / month</span></article><article class="envelope"><h3>Production</h3><b>$139–$390</b><span>₹11,676–₹32,760 / month</span></article></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="wrap">
+          <div class="section-head"><div><span class="section-number">09</span><p class="eyebrow">Product principles</p></div><div><h2>The rules that make Mangokast worth trusting.</h2><p>These principles are the product moat—not a shiny score or a crowded dashboard.</p></div></div>
+          <div class="principles"><article class="principle"><h3>Outcome over vanity</h3><p>Followers are context. Budget-fit reach, clicks, purchases, and margin are decisions.</p></article><article class="principle"><h3>Explain every score</h3><p>A marketer should know why a creator is recommended and what is still unknown.</p></article><article class="principle"><h3>Test before scaling</h3><p>Use small controlled bets to learn before sending the whole budget to one creator.</p></article><article class="principle"><h3>Facts ≠ estimates</h3><p>Separate public API facts, creator-authorized data, Mangokast assumptions, and actual outcomes.</p></article></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer"><div class="wrap"><p>Build the system that learns which creator is worth the next rupee.</p><small>Mangokast product blueprint · planning assumptions only · exchange rate shown for illustration</small></div></footer>
+
+    <script>
+      const FX = 84;
+      const creatorCount = document.querySelector('#creator-count');
+      const refreshes = document.querySelector('#refreshes');
+      const llmTier = document.querySelector('#llm-tier');
+      const infraTier = document.querySelector('#infra-tier');
+      const emailTier = document.querySelector('#email-tier');
+      const providerCost = document.querySelector('#provider-cost');
+
+      function money(value) {
+        return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(Math.max(0, value));
+      }
+
+      function updateCostModel() {
+        const creators = Math.max(1, Number(creatorCount.value) || 1);
+        const refreshCount = Math.max(1, Number(refreshes.value) || 1);
+        const refreshMultiplier = Math.max(1, (creators * refreshCount) / 10);
+        const llm = (Number(llmTier.value) || 0) * refreshMultiplier;
+        const infra = Number(infraTier.value) || 0;
+        const email = Number(emailTier.value) || 0;
+        const provider = Math.max(0, Number(providerCost.value) || 0) * refreshMultiplier;
+        const total = llm + infra + email + provider;
+
+        document.querySelector('#cost-total-usd').textContent = `$${money(total)}`;
+        document.querySelector('#cost-total-inr').textContent = `₹${money(total * FX)} per business / month`;
+        document.querySelector('#cost-llm').textContent = `$${money(llm)} / ₹${money(llm * FX)}`;
+        document.querySelector('#cost-infra').textContent = `$${money(infra)} / ₹${money(infra * FX)}`;
+        document.querySelector('#cost-email').textContent = `$${money(email)} / ₹${money(email * FX)}`;
+        document.querySelector('#cost-provider').textContent = `$${money(provider)} / ₹${money(provider * FX)}`;
+      }
+
+      [creatorCount, refreshes, llmTier, infraTier, emailTier, providerCost].forEach((input) => input.addEventListener('input', updateCostModel));
+      [llmTier, infraTier, emailTier].forEach((input) => input.addEventListener('change', updateCostModel));
+      updateCostModel();
+    </script>
+  </body>
+</html>
